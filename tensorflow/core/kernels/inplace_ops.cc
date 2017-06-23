@@ -161,14 +161,14 @@ typedef Eigen::GpuDevice GPUDevice;
                               .Device(DEVICE_GPU)             \
                               .TypeConstraint<type>("dtype"), \
                           ParallelConcatStart<GPUDevice, type>);
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_EMPTY)
+TF_CALL_GPU_ALL_TYPES(REGISTER_EMPTY)
 #undef REGISTER_EMPTY
 
 #define REGISTER_PARALLEL_CONCAT(type)                                     \
   REGISTER_KERNEL_BUILDER(                                                 \
       Name("ParallelConcat").Device(DEVICE_GPU).TypeConstraint<type>("T"), \
       FailureKernel);
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_PARALLEL_CONCAT);
+TF_CALL_GPU_ALL_TYPES(REGISTER_PARALLEL_CONCAT);
 #undef REGISTER_PARALLEL_CONCAT
 
 #define REGISTER(type)                                    \
@@ -176,7 +176,7 @@ TF_CALL_GPU_NUMBER_TYPES(REGISTER_PARALLEL_CONCAT);
                               .Device(DEVICE_GPU)         \
                               .TypeConstraint<type>("T"), \
                           ParallelConcatUpdate<GPUDevice>);
-TF_CALL_GPU_NUMBER_TYPES(REGISTER)
+TF_CALL_GPU_ALL_TYPES(REGISTER)
 #undef REGISTER
 
 // Register versions that operate on int32 data on the CPU even though the op

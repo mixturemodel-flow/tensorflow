@@ -171,7 +171,7 @@ REGISTER_SYCL_KERNEL(double);
       Name("Assign").Device(DEVICE_GPU).TypeConstraint<type>("T"), \
       AssignOpT<GPUDevice, type>);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_KERNELS);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNELS);
 #undef REGISTER_GPU_KERNELS
 #endif  // GOOGLE_CUDA
 
@@ -198,7 +198,7 @@ namespace functor {
 #define DECLARE_GPU_SPEC(T)                         \
   DECLARE_GPU_SPEC_FOR_OP(T, DenseUpdateType::ADD); \
   DECLARE_GPU_SPEC_FOR_OP(T, DenseUpdateType::SUB)
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPEC);
 #undef DECLARE_GPU_SPEC
 #undef DECLARE_GPU_SPEC_FOR_OP
 }  // namespace functor
@@ -210,7 +210,7 @@ TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC);
   REGISTER_KERNEL_BUILDER(                                            \
       Name("AssignSub").Device(DEVICE_GPU).TypeConstraint<type>("T"), \
       DenseUpdateOp<GPUDevice, type, DenseUpdateType::SUB>);
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_KERNELS);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNELS);
 #undef REGISTER_GPU_KERNELS
 #endif  // end GOOGLE_CUDA
 

@@ -150,7 +150,7 @@ REGISTER_PACK(string);
       Name("Pack").Device(DEVICE_GPU).TypeConstraint<type>("T"), \
       PackOp<GPUDevice, type>)
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 #undef REGISTER_GPU
 
 // A special GPU kernel for int32.

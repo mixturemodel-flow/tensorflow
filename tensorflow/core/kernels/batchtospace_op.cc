@@ -285,7 +285,7 @@ TF_CALL_REAL_NUMBER_TYPES(REGISTER);
                               .HostMemory("crops"),                  \
                           BatchToSpaceOp<GPUDevice, T>);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER);
+TF_CALL_GPU_ALL_TYPES(REGISTER);
 #undef REGISTER
 #endif  // GOOGLE_CUDA
 

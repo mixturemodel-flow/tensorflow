@@ -37,7 +37,7 @@ typedef Eigen::GpuDevice GPUDevice;
   template struct functor::Elu<GPUDevice, T>;       \
   template struct functor::EluGrad<GPUDevice, T>;
 
-TF_CALL_GPU_NUMBER_TYPES(DEFINE_GPU_KERNELS);
+TF_CALL_GPU_ALL_TYPES(DEFINE_GPU_KERNELS);
 
 }  // end namespace tensorflow
 

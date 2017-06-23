@@ -776,7 +776,7 @@ inline void RunIfBoxIndexIsValid<GPUDevice>(
                               .TypeConstraint<T>("T"),             \
                           CropAndResizeGradBoxesOp<GPUDevice, T>);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_KERNEL);
 
 #undef REGISTER_KERNEL
 

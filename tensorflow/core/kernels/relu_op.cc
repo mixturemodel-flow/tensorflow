@@ -59,7 +59,7 @@ TF_CALL_REAL_NUMBER_TYPES(REGISTER_RELU_KERNELS);
       EluGradOp<CPUDevice, type>)
 
 // Elu only makes sense with float or double.
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_ELU_KERNELS);
+TF_CALL_GPU_ALL_TYPES(REGISTER_ELU_KERNELS);
 #undef REGISTER_ELU_KERNELS
 
 #if GOOGLE_CUDA
@@ -105,7 +105,7 @@ namespace functor {
       typename TTypes<T>::Tensor backprops);                                   \
   extern template struct EluGrad<GPUDevice, T>;
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPEC);
 }  // namespace functor
 
 // Registration of the GPU implementations.
@@ -129,7 +129,7 @@ TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC);
       Name("EluGrad").Device(DEVICE_GPU).TypeConstraint<type>("T"),   \
       EluGradOp<GPUDevice, type>)
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_KERNELS);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNELS);
 #undef REGISTER_GPU_KERNELS
 
 #endif  // GOOGLE_CUDA

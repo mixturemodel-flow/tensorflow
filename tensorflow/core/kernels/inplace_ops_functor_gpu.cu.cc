@@ -68,7 +68,7 @@ Status DoParallelConcat(const Device& d, const Tensor& value, int32 loc,
     CASE(float)
     CASE(double)
     CASE(Eigen::half)
-// Using TF_CALL_GPU_NUMBER_TYPES(CASE) results in the compiler complaining
+// Using TF_CALL_GPU_ALL_TYPES(CASE) results in the compiler complaining
 // that CASE is not defined...hence the above construction
 #undef CASE
     default:

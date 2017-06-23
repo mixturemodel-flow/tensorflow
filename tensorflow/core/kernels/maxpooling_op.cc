@@ -996,11 +996,12 @@ namespace functor {
       const Eigen::PaddingType& padding);                              \
   extern template struct SpatialMaxPooling<Eigen::GpuDevice, T>;
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPEC);
 #undef DECLARE_GPU_SPEC
 }  // namespace functor
 
 #define REGISTER_GPU_MAX_POOL_KERNELS(T) REGISTER_MAX_POOL_KERNELS(GPU, T)
+// Sebastian Weiss, 06/23/2017: perftools::gputools::DeviceMemory<int64> is missing
 TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_MAX_POOL_KERNELS);
 #undef REGISTER_GPU_MAX_POOL_KERNELS
 
@@ -1033,6 +1034,8 @@ TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_MAX_POOL_KERNELS);
                               .TypeConstraint<T>("T")                \
                               .TypeConstraint<int64>("Targmax"),     \
                           MaxPoolingGradGradWithArgmaxOp<GPUDevice, T>);
+
+// Sebastian Weiss, 06/23/2017: perftools::gputools::DeviceMemory<int64> is missing
 TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_ONLY_POOL_KERNELS);
 #undef REGISTER_GPU_ONLY_POOL_KERNELS
 

@@ -150,6 +150,13 @@ __device__ __host__ inline T ldg(const T* address) {
 #endif
 }
 
+// Sebastian Weiss, 06/23/2017: __ldg is not available for bool
+template <>
+__device__ __host__ inline bool ldg(
+    const bool* address) {
+  return *address;
+}
+
 template <>
 __device__ __host__ inline std::complex<float> ldg(
     const std::complex<float>* address) {
@@ -223,6 +230,27 @@ CUDA_ATOMIC_WRAPPER(Add, double) {
 
   return __longlong_as_double(old);
 }
+
+
+// Sebastian Weiss, 06/23/2017: signed int64 are not supported as atomics
+//    hence I simply cast to uint64. If I'm not totally wrong, this should work
+// TODO: find a better way to avoid this downcast
+CUDA_ATOMIC_WRAPPER(Add, int64) {
+	return (int64)(atomicAdd(reinterpret_cast<uint64*>(address), (uint64)(val)));
+}
+// But sadly, this reinterpretation does not work for max.
+CUDA_ATOMIC_WRAPPER(Max, int64) {
+  uint64* address_as_ull = reinterpret_cast<uint64*>(address);
+  int64 old = (int64)(*address_as_ull), assumed;
+
+  do {
+    assumed = old;
+    old = (int64)(atomicCAS(address_as_ull, (uint64)(assumed), (uint64)(max(val, assumed))));
+  } while (assumed != old);
+
+  return old;
+}
+
 
 // Helper functions for CudaAtomicAdd(half*, half), below.
 //
@@ -307,6 +335,7 @@ __global__ void SetZero(const int nthreads, T* bottom_diff) {
 #define WRAPPED_ATOMIC_SUB(T) \
   CUDA_ATOMIC_WRAPPER(Sub, T) { return CudaAtomicAdd(address, -val); }
 
+WRAPPED_ATOMIC_SUB(int64);
 WRAPPED_ATOMIC_SUB(uint64);
 WRAPPED_ATOMIC_SUB(int32);
 WRAPPED_ATOMIC_SUB(uint32);
@@ -413,6 +442,31 @@ CUDA_ATOMIC_WRAPPER(Div, double) {
                     __double_as_longlong(__longlong_as_double(assumed) / val));
   } while (assumed != old);
   return __longlong_as_double(old);
+}
+
+
+// Sebastian Weiss, 06/23/2017: there is no atomicSub, atomicDiv, atomicMul for int64 -> use CAS
+CUDA_ATOMIC_WRAPPER(Mul, int64) {
+  uint64* address_as_ull = reinterpret_cast<uint64*>(address);
+  int64 old = (int64)(*address_as_ull), assumed;
+
+  do {
+    assumed = old;
+    old = (int64)(atomicCAS(address_as_ull, (uint64)(assumed), (uint64)(val * assumed)));
+  } while (assumed != old);
+
+  return old;
+}
+CUDA_ATOMIC_WRAPPER(Div, int64) {
+  uint64* address_as_ull = reinterpret_cast<uint64*>(address);
+  int64 old = (int64)(*address_as_ull), assumed;
+
+  do {
+    assumed = old;
+    old = (int64)(atomicCAS(address_as_ull, (uint64)(assumed), (uint64)(val / assumed)));
+  } while (assumed != old);
+
+  return old;
 }
 
 #undef USE_CUDA_ATOMIC

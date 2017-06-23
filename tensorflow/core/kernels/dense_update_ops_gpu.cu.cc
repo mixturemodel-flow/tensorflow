@@ -29,7 +29,7 @@ typedef Eigen::GpuDevice GPUDevice;
   template struct functor::DenseUpdate<GPUDevice, T, ADD>; \
   template struct functor::DenseUpdate<GPUDevice, T, SUB>; \
   template struct functor::DenseUpdate<GPUDevice, T, ASSIGN>;
-TF_CALL_GPU_NUMBER_TYPES(DEFINE_GPU_KERNELS);
+TF_CALL_GPU_ALL_TYPES(DEFINE_GPU_KERNELS);
 #undef DEFINE_GPU_KERNELS
 
 }  // end namespace tensorflow

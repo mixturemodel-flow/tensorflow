@@ -436,7 +436,7 @@ REGISTER_STRIDED_SLICE(bfloat16);
                               .TypeConstraint<int32>("Index"),   \
                           StridedSliceAssignOp<GPUDevice, type>)
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 

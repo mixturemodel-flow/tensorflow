@@ -86,7 +86,7 @@ REGISTER_SYCL_KERNEL(double);
                               .HostMemory("is_initialized"),               \
                           IsVariableInitializedOp);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_KERNELS);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNELS);
 #undef REGISTER_GPU_KERNELS
 #endif  // GOOGLE_CUDA
 

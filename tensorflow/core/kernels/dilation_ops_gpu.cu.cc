@@ -295,7 +295,7 @@ struct DilationBackpropFilter<GPUDevice, T> {
   template struct functor::DilationBackpropInput<GPUDevice, T>; \
   template struct functor::DilationBackpropFilter<GPUDevice, T>;
 
-TF_CALL_GPU_NUMBER_TYPES(DEFINE_GPU_SPECS);
+TF_CALL_GPU_ALL_TYPES(DEFINE_GPU_SPECS);
 
 #undef DEFINE_GPU_SPECS
 

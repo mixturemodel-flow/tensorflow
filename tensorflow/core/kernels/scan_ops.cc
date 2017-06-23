@@ -104,7 +104,7 @@ namespace functor {
   DECLARE(Eigen::internal::SumReducer<T>, T); \
   DECLARE(Eigen::internal::ProdReducer<T>, T);
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_FOR_ALL_REDUCERS);
+TF_CALL_GPU_ALL_TYPES(DECLARE_FOR_ALL_REDUCERS);
 
 #undef DECLARE_FOR_ALL_REDUCERS
 #undef DECLARE
@@ -133,7 +133,7 @@ TF_CALL_NUMBER_TYPES(REGISTER_CPU_KERNELS);
           .TypeConstraint<int32>("Tidx") \
           .HostMemory("axis"),           \
       ScanOp<GPUDevice, type, Eigen::internal::SumReducer<type>>)
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_KERNELS)
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNELS)
 #undef REGISTER_GPU_KERNELS
 #endif  // GOOGLE_CUDA
 
@@ -157,7 +157,7 @@ TF_CALL_NUMBER_TYPES(REGISTER_CPU_KERNELS);
           .TypeConstraint<int32>("Tidx") \
           .HostMemory("axis"),           \
       ScanOp<GPUDevice, type, Eigen::internal::ProdReducer<type>>)
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_KERNELS)
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNELS)
 #undef REGISTER_GPU_KERNELS
 #endif  // GOOGLE_CUDA
 

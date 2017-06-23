@@ -359,7 +359,7 @@ TF_CALL_double(REGISTER_GRAD_KERNEL);
                               .HostMemory("size"),    \
                           ResizeBilinearOp<GPUDevice, T>);
 
-TF_CALL_GPU_NUMBER_TYPES_NO_HALF(REGISTER_KERNEL);
+TF_CALL_GPU_ALL_TYPES_NO_HALF(REGISTER_KERNEL);
 
 #undef REGISTER_KERNEL
 
@@ -368,7 +368,7 @@ TF_CALL_GPU_NUMBER_TYPES_NO_HALF(REGISTER_KERNEL);
       Name("ResizeBilinearGrad").Device(DEVICE_GPU).TypeConstraint<T>("T"), \
       ResizeBilinearOpGrad<GPUDevice, T>);
 
-TF_CALL_GPU_NUMBER_TYPES_NO_HALF(REGISTER_GRAD_KERNEL);
+TF_CALL_GPU_ALL_TYPES_NO_HALF(REGISTER_GRAD_KERNEL);
 
 #undef REGISTER_GRAD_KERNEL
 

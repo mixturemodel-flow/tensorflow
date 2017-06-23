@@ -212,7 +212,7 @@ struct ResizeBilinearGrad<GPUDevice, T> {
   template struct ResizeBilinear<GPUDevice, T>; \
   template struct ResizeBilinearGrad<GPUDevice, T>;
 
-TF_CALL_GPU_NUMBER_TYPES_NO_HALF(DEFINE_GPU_SPECS);
+TF_CALL_GPU_ALL_TYPES_NO_HALF(DEFINE_GPU_SPECS);
 
 #undef DEFINE_GPU_SPECS
 

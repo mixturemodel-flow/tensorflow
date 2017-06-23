@@ -156,8 +156,8 @@ namespace functor {
   extern template struct ArgMax<GPUDevice, T>; \
   extern template struct ArgMin<GPUDevice, T>;
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPECS);
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_CLASS);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPECS);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_CLASS);
 
 #undef DECLARE_GPU_SPECS
 #undef DECLARE_GPU_CLASS
@@ -179,7 +179,7 @@ TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_CLASS);
                               .HostMemory("dimension"),      \
                           ArgMinOp<GPUDevice, type>);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_ARGMAX_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_ARGMAX_GPU);
 
 #undef REGISTER_ARGMAX_GPU
 

@@ -102,6 +102,7 @@ struct ReduceFunctor<GPUDevice, Eigen::internal::MeanReducer<T>> {
 
 DEFINE_FOR_ALL_REDUCERS(Eigen::half);
 DEFINE_FOR_ALL_REDUCERS(int32);
+DEFINE_FOR_ALL_REDUCERS(int64); // Sebastian Weiss, 06/23/2017: int64 was missing here
 DEFINE_FOR_ALL_REDUCERS(float);
 DEFINE_FOR_ALL_REDUCERS(double);
 #undef DEFINE_FOR_ALL_REDUCERS

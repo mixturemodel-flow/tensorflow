@@ -245,7 +245,7 @@ REGISTER_KERNEL_BUILDER(Name("TensorArrayV3").Device(DEVICE_CPU),
                               .HostMemory("handle"),         \
                           TensorArrayOp);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -443,7 +443,7 @@ TF_CALL_ALL_TYPES(REGISTER_WRITE);
                               .HostMemory("index"),             \
                           TensorArrayWriteOp<GPUDevice, type>);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -532,7 +532,7 @@ TF_CALL_ALL_TYPES(REGISTER_READ)
                               .HostMemory("index"),            \
                           TensorArrayReadOp<GPUDevice, type>);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -733,7 +733,7 @@ REGISTER_GATHER_AND_PACK(bfloat16);
           .HostMemory("handle"),                                            \
       TensorArrayPackOrGatherOp<GPUDevice, type, false /* LEGACY_PACK */>);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -955,7 +955,7 @@ REGISTER_CONCAT(bfloat16);
                               .HostMemory("handle"),             \
                           TensorArrayConcatOp<GPUDevice, type>)
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -1174,7 +1174,7 @@ TF_CALL_ALL_TYPES(REGISTER_SCATTER_AND_UNPACK);
       TensorArrayUnpackOrScatterOp<GPUDevice, type,             \
                                    false /* LEGACY_UNPACK */>);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 #undef REGISTER_GPU
@@ -1341,7 +1341,7 @@ TF_CALL_ALL_TYPES(REGISTER_SPLIT);
                               .HostMemory("handle"),            \
                           TensorArraySplitOp<GPUDevice, type>);
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 #undef REGISTER_GPU

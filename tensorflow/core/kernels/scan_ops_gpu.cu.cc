@@ -33,7 +33,7 @@ typedef Eigen::Index Index;
   DEFINE(Eigen::internal::SumReducer<T>, T); \
   DEFINE(Eigen::internal::ProdReducer<T>, T);
 
-TF_CALL_GPU_NUMBER_TYPES(DEFINE_FOR_ALL_REDUCERS);
+TF_CALL_GPU_ALL_TYPES(DEFINE_FOR_ALL_REDUCERS);
 #undef DEFINE_FOR_ALL_REDUCERS
 #undef DEFINE
 

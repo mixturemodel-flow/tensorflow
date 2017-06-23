@@ -142,7 +142,7 @@ namespace functor {
       typename TTypes<T, 3>::Tensor output);                                 \
   extern template struct MatrixBandPart<GPUDevice, T>;
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPEC);
 
 }  // namespace functor
 
@@ -154,7 +154,7 @@ TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC);
                               .HostMemory("num_lower")   \
                               .HostMemory("num_upper"),  \
                           MatrixBandPartOp<GPUDevice, type>);
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_MATRIX_BAND_PART_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_MATRIX_BAND_PART_GPU);
 #undef REGISTER_MATRIX_BAND_PART_GPU
 
 // Registration of the deprecated kernel.
@@ -166,7 +166,7 @@ TF_CALL_GPU_NUMBER_TYPES(REGISTER_MATRIX_BAND_PART_GPU);
                               .HostMemory("num_lower")   \
                               .HostMemory("num_upper"),  \
                           MatrixBandPartOp<GPUDevice, type>);
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_BATCH_MATRIX_BAND_PART_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_BATCH_MATRIX_BAND_PART_GPU);
 #undef REGISTER_BATCH_MATRIX_BAND_PART_GPU
 
 #endif  // GOOGLE_CUDA

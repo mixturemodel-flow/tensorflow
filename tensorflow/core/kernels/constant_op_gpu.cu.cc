@@ -96,6 +96,7 @@ DEFINE_SETZERO_GPU(double);
 DEFINE_SETZERO_GPU(complex64);
 DEFINE_SETZERO_GPU(complex128);
 DEFINE_SETZERO_GPU(int64);
+DEFINE_SETZERO_GPU(int32); // Sebastian Weiss, 06/23/2017: why was int32 missing here??
 #undef DEFINE_SETZERO_GPU
 
 // Partial specialization of FillFunctor<Device=GPUDevice, T>.
@@ -114,6 +115,7 @@ DEFINE_SETONE_GPU(double);
 DEFINE_SETONE_GPU(complex64);
 DEFINE_SETONE_GPU(complex128);
 DEFINE_SETONE_GPU(int64);
+DEFINE_SETONE_GPU(int32); // Sebastian Weiss, 06/23/2017: why was int32 missing here??
 #undef DEFINE_SETONE_GPU
 
 }  // end namespace functor

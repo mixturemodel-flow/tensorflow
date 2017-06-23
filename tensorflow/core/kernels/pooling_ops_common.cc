@@ -128,7 +128,7 @@ namespace functor {
       typename TTypes<T, 4>::Tensor out);                           \
   extern template struct TransformDepth<GPUDevice, T, Eigen::DenseIndex>;
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC)
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPEC)
 #undef DECLARE_GPU_SPEC
 }  // namespace functor
 
@@ -376,6 +376,7 @@ void DnnPoolingGradOp<T>::Compute(
 #define DEFINE_DNN_OPS(T)         \
   template class DnnPoolingOp<T>; \
   template class DnnPoolingGradOp<T>;
+// Sebastian Weiss, 06/23/2017: perftools::gputools::DeviceMemory<int64> is missing
 TF_CALL_GPU_NUMBER_TYPES(DEFINE_DNN_OPS)
 #undef DEFINE_DNN_OPS
 

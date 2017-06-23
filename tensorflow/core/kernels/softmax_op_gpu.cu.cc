@@ -43,6 +43,9 @@ template struct functor::SoftmaxFunctor<GPUDevice, Eigen::half>;
 template struct functor::SoftmaxFunctor<GPUDevice, float>;
 template struct functor::SoftmaxFunctor<GPUDevice, double>;
 
+template struct functor::SoftmaxFunctor<GPUDevice, int32>;
+template struct functor::SoftmaxFunctor<GPUDevice, int64>;
+
 }  // end namespace tensorflow
 
 #endif  // GOOGLE_CUDA

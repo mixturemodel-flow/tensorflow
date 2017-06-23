@@ -203,7 +203,7 @@ namespace functor {
   DECLARE_GPU_SPEC(T, 4);    \
   DECLARE_GPU_SPEC(T, 5);
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPECS);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPECS);
 #undef DECLARE_GPU_SPECS
 #undef DECLARE_GPU_SPEC
 }  // namespace functor
@@ -217,7 +217,7 @@ TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPECS);
                               .HostMemory("paddings"),            \
                           MirrorPadOp<GpuDevice, T>)
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 #undef REGISTER_GPU_KERNEL
 #endif  // GOOGLE_CUDA
 
@@ -386,7 +386,7 @@ namespace functor {
   DECLARE_GPU_SPEC(T, 4);    \
   DECLARE_GPU_SPEC(T, 5);
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPECS);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPECS);
 #undef DECLARE_GPU_SPECS
 #undef DECLARE_GPU_SPEC
 }  // namespace functor
@@ -400,7 +400,7 @@ TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPECS);
                               .HostMemory("paddings"),            \
                           MirrorPadGradOp<GpuDevice, T>)
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 #undef REGISTER_GPU_KERNEL
 #endif  // GOOGLE_CUDA
 

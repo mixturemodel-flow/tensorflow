@@ -173,6 +173,21 @@ limitations under the License.
 
 #define TF_CALL_GPU_NUMBER_TYPES_NO_HALF(m) TF_CALL_float(m) TF_CALL_double(m)
 
+// Sebastian Weiss, 06/23/2017: add integer support for GPUs
+// I don't use TF_CALL_INTEGRAL_TYPES, because this would enable int16 and int8
+//   and many functions don't support them (e.g. cudaAtomicAdd)
+// I also don't use bool here: This macro is called on functions that need to perform some arithmacy
+//   that are not supported on halves, hence also not supported on booleans.
+// TODO: check if this is really the case in all ops that use that macro
+// TODO: where do I need boolean support?
+#define TF_CALL_GPU_ALL_TYPES(m) \
+  TF_CALL_GPU_NUMBER_TYPES(m) \
+  TF_CALL_int64(m) TF_CALL_int32(m)
+
+#define TF_CALL_GPU_ALL_TYPES_NO_HALF(m) \
+  TF_CALL_GPU_NUMBER_TYPES_NO_HALF(m) \
+  TF_CALL_int64(m) TF_CALL_int32(m)
+
 // Call "m" on all quantized types.
 // TODO(cwhipkey): include TF_CALL_qint16(m) TF_CALL_quint16(m)
 #define TF_CALL_QUANTIZED_TYPES(m) \

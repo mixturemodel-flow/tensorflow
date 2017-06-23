@@ -124,7 +124,7 @@ struct ResizeNearestNeighbor<GPUDevice, T, align_corners> {
   template struct ResizeNearestNeighbor<GPUDevice, T, false>; \
   template struct ResizeNearestNeighbor<GPUDevice, T, true>;
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPEC);
 
 #undef DECLARE_GPU_SPEC
 
@@ -166,7 +166,7 @@ struct ResizeNearestNeighborGrad<GPUDevice, T, align_corners> {
   template struct ResizeNearestNeighborGrad<GPUDevice, T, false>; \
   template struct ResizeNearestNeighborGrad<GPUDevice, T, true>;
 
-TF_CALL_GPU_NUMBER_TYPES(DECLARE_GPU_SPEC);
+TF_CALL_GPU_ALL_TYPES(DECLARE_GPU_SPEC);
 
 #undef DECLARE_GPU_SPEC
 

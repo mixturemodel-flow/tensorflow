@@ -336,7 +336,7 @@ REGISTER_SPLIT(quint8);
                               .HostMemory("split_dim"),  \
                           SplitOpGPU<type>)
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_GPU);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 #undef REGISTER_GPU
@@ -351,7 +351,7 @@ TF_CALL_complex128(REGISTER_GPU);
                               .HostMemory("split_dim"),   \
                           SplitOpSYCL<type>)
 
-TF_CALL_GPU_NUMBER_TYPES(REGISTER_SYCL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_SYCL);
 #undef REGISTER_SYCL
 
 #endif  // TENSORFLOW_USE_SYCL

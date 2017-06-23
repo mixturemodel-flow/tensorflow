@@ -33,7 +33,7 @@ typedef Eigen::GpuDevice GPUDevice;
   template struct functor::Softsign<GPUDevice, T>; \
   template struct functor::SoftsignGrad<GPUDevice, T>;
 
-TF_CALL_GPU_NUMBER_TYPES(DEFINE_GPU_KERNELS);
+TF_CALL_GPU_ALL_TYPES(DEFINE_GPU_KERNELS);
 
 }  // end namespace tensorflow
 
