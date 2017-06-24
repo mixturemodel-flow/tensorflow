@@ -38,7 +38,8 @@ TF_CALL_NUMBER_TYPES(REGISTER_CPU_KERNELS);
           .HostMemory("reduction_indices"), \
       ReductionOp<GPUDevice, type, Eigen::internal::ProdReducer<type>>);
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNELS);
-TF_CALL_int32(REGISTER_GPU_KERNELS);
+// Sebastian Weiss, 06/24/2017: This is already handled by TF_CALL_GPU_ALL_TYPES
+//TF_CALL_int32(REGISTER_GPU_KERNELS);
 TF_CALL_complex64(REGISTER_GPU_KERNELS);
 TF_CALL_complex128(REGISTER_GPU_KERNELS);
 #undef REGISTER_GPU_KERNELS

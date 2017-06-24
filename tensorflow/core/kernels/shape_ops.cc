@@ -81,13 +81,16 @@ REGISTER_KERNEL_BUILDER(Name("Shape")
                               .TypeConstraint<type>("T"),        \
                           ShapeOp<int64>);
 
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 TF_CALL_bool(REGISTER_GPU_KERNEL);
 #undef REGISTER_GPU_KERNEL
 
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled by TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("Shape")
                             .Device(DEVICE_GPU)
                             .HostMemory("input")
@@ -102,6 +105,7 @@ REGISTER_KERNEL_BUILDER(Name("Shape")
                             .TypeConstraint<int32>("T")
                             .TypeConstraint<int64>("out_type"),
                         ShapeOp<int64>);
+*/
 #endif
 
 // ShapeN ---------------------------------------
@@ -131,13 +135,16 @@ REGISTER_KERNEL_BUILDER(Name("ShapeN")
                               .TypeConstraint<type>("T"),        \
                           ShapeNOp<int64>)
 
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 TF_CALL_bool(REGISTER_GPU_KERNEL);
 #undef REGISTER_GPU_KERNEL
 
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled by TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("ShapeN")
                             .Device(DEVICE_GPU)
                             .HostMemory("input")
@@ -152,6 +159,7 @@ REGISTER_KERNEL_BUILDER(Name("ShapeN")
                             .TypeConstraint<int32>("T")
                             .TypeConstraint<int64>("out_type"),
                         ShapeNOp<int64>);
+*/
 #endif
 
 #if TENSORFLOW_USE_SYCL
@@ -231,12 +239,16 @@ REGISTER_KERNEL_BUILDER(Name("Rank")
                               .TypeConstraint<type>("T") \
                               .HostMemory("output"),     \
                           RankOp);
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
+REGISTER_GPU_KERNEL(bool);
 #undef REGISTER_GPU_KERNEL
 
 // A special GPU kernel for int32 and bool.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled by TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("Rank")
                             .Device(DEVICE_GPU)
                             .TypeConstraint<int32>("T")
@@ -250,6 +262,7 @@ REGISTER_KERNEL_BUILDER(Name("Rank")
                             .HostMemory("input")
                             .HostMemory("output"),
                         RankOp);
+*/
 #endif
 
 // Size ------------------------------------------
@@ -278,13 +291,16 @@ REGISTER_KERNEL_BUILDER(Name("Size")
                               .TypeConstraint<int64>("out_type") \
                               .HostMemory("output"),             \
                           SizeOp<int64>);
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 TF_CALL_bool(REGISTER_GPU_KERNEL);
 #undef REGISTER_GPU_KERNEL
 
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled by TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("Size")
                             .Device(DEVICE_GPU)
                             .TypeConstraint<int32>("T")
@@ -299,6 +315,7 @@ REGISTER_KERNEL_BUILDER(Name("Size")
                             .HostMemory("input")
                             .HostMemory("output"),
                         SizeOp<int64>);
+*/
 #endif
 
 #ifdef TENSORFLOW_USE_SYCL
@@ -353,10 +370,12 @@ REGISTER_KERNEL_BUILDER(Name("ExpandDims")
                               .TypeConstraint<int32>("Tdim") \
                               .HostMemory("dim"),            \
                           ExpandDimsOp);
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 TF_CALL_bool(REGISTER_GPU_KERNEL);
 #undef REGISTER_GPU_KERNEL
 
+// Sebastian Weiss, 06/24/2017: This is already handled by TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("ExpandDims")
                             .Device(DEVICE_GPU)
                             .TypeConstraint<int32>("T")
@@ -365,6 +384,7 @@ REGISTER_KERNEL_BUILDER(Name("ExpandDims")
                             .HostMemory("dim")
                             .HostMemory("output"),
                         ExpandDimsOp);
+*/
 #endif // GOOGLE_CUDA
 
 #ifdef TENSORFLOW_USE_SYCL
@@ -398,19 +418,23 @@ REGISTER_KERNEL_BUILDER(Name("Squeeze").Device(DEVICE_CPU), SqueezeOp);
   REGISTER_KERNEL_BUILDER(                                          \
       Name("Squeeze").Device(DEVICE_GPU).TypeConstraint<type>("T"), \
       SqueezeOp);
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 TF_CALL_bool(REGISTER_GPU_KERNEL);
 #undef REGISTER_GPU_KERNEL
 
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled by TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("Squeeze")
                             .Device(DEVICE_GPU)
                             .TypeConstraint<int32>("T")
                             .HostMemory("input")
                             .HostMemory("output"),
                         SqueezeOp);
+*/
 #endif
 
 #if TENSORFLOW_USE_SYCL

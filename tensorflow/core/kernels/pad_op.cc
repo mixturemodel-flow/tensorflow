@@ -192,6 +192,9 @@ TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled in TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("Pad")
                             .Device(DEVICE_GPU)
                             .TypeConstraint<int32>("T")
@@ -200,6 +203,7 @@ REGISTER_KERNEL_BUILDER(Name("Pad")
                             .HostMemory("paddings")
                             .HostMemory("output"),
                         PadOp<CPUDevice, int32>);
+*/
 #endif
 
 #ifdef TENSORFLOW_USE_SYCL

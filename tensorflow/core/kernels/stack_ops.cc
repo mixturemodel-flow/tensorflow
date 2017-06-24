@@ -269,12 +269,16 @@ REGISTER_KERNEL_BUILDER(Name("StackPush").Device(DEVICE_CPU),
                               .TypeConstraint<type>("T"), \
                           StackPushOp<GPUDevice>);
 
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
+REGISTER_GPU_KERNEL(bool);
 #undef REGISTER_GPU_KERNEL
 
 // Special GPU kernels for int32 and bool.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled in TF_CALL_GPU_ALL_TYPES
+/*
 #define REGISTER_GPU_HOST_KERNEL(type)                    \
   REGISTER_KERNEL_BUILDER(Name("StackPush")               \
                               .Device(DEVICE_GPU)         \
@@ -286,6 +290,7 @@ TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
 
 REGISTER_GPU_HOST_KERNEL(int32);
 REGISTER_GPU_HOST_KERNEL(bool);
+*/
 
 #undef REGISTER_GPU_HOST_KERNEL
 

@@ -92,7 +92,8 @@ REGISTER_SYCL_HOST_KERNEL(bool);
       Name("StopGradient").Device(DEVICE_GPU).TypeConstraint<type>("T"),    \
       IdentityOp)
 
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
+REGISTER_GPU_KERNEL(bool);
 REGISTER_GPU_KERNEL(bfloat16);
 
 #undef REGISTER_GPU_KERNEL
@@ -115,8 +116,11 @@ REGISTER_GPU_KERNEL(bfloat16);
                               .TypeConstraint<type>("T"), \
                           IdentityOp)
 
+// Sebastian Weiss, 06/24/2017: This is already handled in TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_GPU_HOST_KERNEL(int32);
 REGISTER_GPU_HOST_KERNEL(bool);
+*/
 
 #undef REGISTER_GPU_HOST_KERNEL
 

@@ -31,7 +31,7 @@ REGISTER_KERNEL_BUILDER(Name("Reshape")
                               .TypeConstraint<type>("T")        \
                               .TypeConstraint<int32>("Tshape"), \
                           ReshapeOp);
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 #undef REGISTER_GPU_KERNEL
 
 #ifdef TENSORFLOW_USE_SYCL
@@ -59,6 +59,9 @@ REGISTER_KERNEL_BUILDER(Name("Reshape")
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled by TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("Reshape")
                             .Device(DEVICE_GPU)
                             .HostMemory("tensor")
@@ -67,6 +70,7 @@ REGISTER_KERNEL_BUILDER(Name("Reshape")
                             .TypeConstraint<int32>("T")
                             .TypeConstraint<int32>("Tshape"),
                         ReshapeOp);
+*/
 #endif
 
 }  // namespace tensorflow

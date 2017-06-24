@@ -45,6 +45,9 @@ TF_CALL_complex128(REGISTER_GPU_KERNELS);
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled by TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(
     Name("Sum")
         .Device(DEVICE_GPU)
@@ -54,6 +57,7 @@ REGISTER_KERNEL_BUILDER(
         .HostMemory("output")
         .HostMemory("reduction_indices"),
     ReductionOp<CPUDevice, int32, Eigen::internal::SumReducer<int32>>);
+*/
 
 #endif
 

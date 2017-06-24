@@ -77,6 +77,7 @@ REGISTER_KERNEL(GPU, uint8);
 REGISTER_KERNEL(GPU, int8);
 REGISTER_KERNEL(GPU, uint16);
 REGISTER_KERNEL(GPU, int16);
+REGISTER_KERNEL(GPU, int32);
 REGISTER_KERNEL(GPU, int64);
 REGISTER_KERNEL(GPU, complex64);
 REGISTER_KERNEL(GPU, complex128);
@@ -108,11 +109,15 @@ void HostConstantOp::Compute(OpKernelContext* ctx) {
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled in TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("Const")
                             .Device(DEVICE_GPU)
                             .HostMemory("output")
                             .TypeConstraint<int32>("dtype"),
                         HostConstantOp);
+*/
 #endif
 
 #ifdef TENSORFLOW_USE_SYCL
@@ -218,12 +223,16 @@ REGISTER_KERNEL(GPU, uint8);
 REGISTER_KERNEL(GPU, int8);
 REGISTER_KERNEL(GPU, uint16);
 REGISTER_KERNEL(GPU, int16);
+REGISTER_KERNEL(GPU, int32);
 REGISTER_KERNEL(GPU, int64);
 // Currently we do not support filling strings and complex64 on GPU
 
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
+
+// Sebastian Weiss, 06/24/2017: This is already handled in TF_CALL_GPU_ALL_TYPES
+/*
 REGISTER_KERNEL_BUILDER(Name("Fill")
                             .Device(DEVICE_GPU)
                             .TypeConstraint<int32>("T")
@@ -231,6 +240,7 @@ REGISTER_KERNEL_BUILDER(Name("Fill")
                             .HostMemory("value")
                             .HostMemory("output"),
                         FillOp<CPUDevice, int32>);
+*/
 #endif
 
 #undef REGISTER_KERNEL
