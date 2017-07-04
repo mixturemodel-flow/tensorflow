@@ -30,6 +30,7 @@ typedef Eigen::GpuDevice GPUDevice;
   template struct functor::DenseUpdate<GPUDevice, T, SUB>; \
   template struct functor::DenseUpdate<GPUDevice, T, ASSIGN>;
 TF_CALL_GPU_ALL_TYPES(DEFINE_GPU_KERNELS);
+TF_CALL_bool(DEFINE_GPU_KERNELS); // 04/07/2017, Sebastian Weiss: also register boolean
 #undef DEFINE_GPU_KERNELS
 
 }  // end namespace tensorflow

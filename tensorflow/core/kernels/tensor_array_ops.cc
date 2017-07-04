@@ -535,7 +535,7 @@ TF_CALL_ALL_TYPES(REGISTER_READ)
                           TensorArrayReadOp<GPUDevice, type>);
 
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
-//TODO
+TF_CALL_bool(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -737,6 +737,7 @@ REGISTER_GATHER_AND_PACK(bfloat16);
       TensorArrayPackOrGatherOp<GPUDevice, type, false /* LEGACY_PACK */>);
 
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
+TF_CALL_bool(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -963,6 +964,7 @@ REGISTER_CONCAT(bfloat16);
                           TensorArrayConcatOp<GPUDevice, type>)
 
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
+TF_CALL_bool(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -1187,6 +1189,7 @@ TF_CALL_ALL_TYPES(REGISTER_SCATTER_AND_UNPACK);
                                    false /* LEGACY_UNPACK */>);
 
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
+TF_CALL_bool(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 #undef REGISTER_GPU
@@ -1354,6 +1357,7 @@ TF_CALL_ALL_TYPES(REGISTER_SPLIT);
                           TensorArraySplitOp<GPUDevice, type>);
 
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
+TF_CALL_bool(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 #undef REGISTER_GPU

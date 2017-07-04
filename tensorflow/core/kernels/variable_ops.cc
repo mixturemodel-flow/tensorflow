@@ -87,6 +87,7 @@ REGISTER_SYCL_KERNEL(double);
                           IsVariableInitializedOp);
 
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNELS);
+TF_CALL_bool(REGISTER_GPU_KERNELS); // 07/04/2017, sebastian weiss: also add boolean support
 #undef REGISTER_GPU_KERNELS
 #endif  // GOOGLE_CUDA
 
