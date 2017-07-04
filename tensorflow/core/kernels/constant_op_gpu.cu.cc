@@ -76,8 +76,12 @@ struct FillFunctor<GPUDevice, T> {
 };
 
 #define DEFINE_FILL_GPU(T) template struct FillFunctor<GPUDevice, T>;
-TF_CALL_REAL_NUMBER_TYPES(DEFINE_FILL_GPU);
+TF_CALL_GPU_ALL_TYPES(DEFINE_FILL_GPU); // Sebastian Weiss, 06/23/2017: changed to ALL_TYPES to include integers
 DEFINE_FILL_GPU(bool);
+DEFINE_FILL_GPU(uint8);
+DEFINE_FILL_GPU(int8);
+DEFINE_FILL_GPU(uint16);
+DEFINE_FILL_GPU(int16);
 #undef DEFINE_FILL_GPU
 
 // Partial specialization of FillFunctor<Device=GPUDevice, T>.
@@ -97,6 +101,10 @@ DEFINE_SETZERO_GPU(complex64);
 DEFINE_SETZERO_GPU(complex128);
 DEFINE_SETZERO_GPU(int64);
 DEFINE_SETZERO_GPU(int32); // Sebastian Weiss, 06/23/2017: why was int32 missing here??
+DEFINE_SETZERO_GPU(int8);
+DEFINE_SETZERO_GPU(int16);
+DEFINE_SETZERO_GPU(uint8);
+DEFINE_SETZERO_GPU(uint16);
 #undef DEFINE_SETZERO_GPU
 
 // Partial specialization of FillFunctor<Device=GPUDevice, T>.
@@ -116,6 +124,10 @@ DEFINE_SETONE_GPU(complex64);
 DEFINE_SETONE_GPU(complex128);
 DEFINE_SETONE_GPU(int64);
 DEFINE_SETONE_GPU(int32); // Sebastian Weiss, 06/23/2017: why was int32 missing here??
+DEFINE_SETONE_GPU(uint8);
+DEFINE_SETONE_GPU(int8);
+DEFINE_SETONE_GPU(uint16);
+DEFINE_SETONE_GPU(int16);
 #undef DEFINE_SETONE_GPU
 
 }  // end namespace functor

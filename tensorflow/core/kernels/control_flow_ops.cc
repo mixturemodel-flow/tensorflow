@@ -179,8 +179,23 @@ class RefSelectOp : public OpKernel {
                               .TypeConstraint<type>("T"), \
                           RefSelectOp)
 TF_CALL_ALL_TYPES(REGISTER_CPU_REF_SELECT);
+TF_CALL_bool(REGISTER_CPU_REF_SELECT);
 
 #undef REGISTER_CPU_REF_SWITCH
+
+// 07/04/2017, Sebastian Weiss: add GPU kernel
+#define REGISTER_GPU_REF_SELECT(type)                     \
+  REGISTER_KERNEL_BUILDER(Name("RefSelect")               \
+                              .Device(DEVICE_GPU)         \
+                              .HostMemory("index")        \
+                              .TypeConstraint<type>("T"), \
+                          RefSelectOp)
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_REF_SELECT);
+TF_CALL_bool(REGISTER_GPU_REF_SELECT);
+#undef REGISTER_GPU_REF_SWITCH
+
+
+
 
 MergeOp::MergeOp(OpKernelConstruction* context) : OpKernel(context) {
   const DataType dt = context->input_type(0);
@@ -230,8 +245,9 @@ REGISTER_KERNEL_BUILDER(Name("RefMerge").Device(DEVICE_CPU), MergeOp);
                               .HostMemory("value_index"), \
                           MergeOp);
 
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_REF_KERNEL);
+// 07/04/2017, Sebastian Weiss: switched to TF_CALL_GPU_ALL_TYPES to include int32
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL); 
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_REF_KERNEL);
 REGISTER_GPU_KERNEL(bool);
 REGISTER_GPU_REF_KERNEL(bool);
 
@@ -279,7 +295,8 @@ TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_SYCL_REF_KERNEL);
                               .TypeConstraint<type>("T"), \
                           MergeOp)
 
-REGISTER_GPU_HOST_KERNEL(int32);
+// 07/04/2017, Sebastian Weiss: int32 is now also fully on the GPU
+//REGISTER_GPU_HOST_KERNEL(int32);
 REGISTER_GPU_HOST_KERNEL(string);
 REGISTER_GPU_HOST_KERNEL(ResourceHandle);
 

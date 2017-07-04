@@ -179,6 +179,9 @@ TF_CALL_GPU_ALL_TYPES(REGISTER_PARALLEL_CONCAT);
 TF_CALL_GPU_ALL_TYPES(REGISTER)
 #undef REGISTER
 
+// 07/03/2017, Sebastian Weiss: This is now handled in TF_CALL_GPU_ALL_TYPES
+/*
+
 // Register versions that operate on int32 data on the CPU even though the op
 // has been placed on the GPU
 
@@ -189,6 +192,8 @@ REGISTER_KERNEL_BUILDER(Name("_ParallelConcatUpdate")
                             .HostMemory("output")
                             .TypeConstraint<int32>("T"),
                         ParallelConcatUpdate<CPUDevice>);
+*/
+
 #endif
 
 }  // end namespace

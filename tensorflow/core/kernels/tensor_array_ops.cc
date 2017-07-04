@@ -246,6 +246,7 @@ REGISTER_KERNEL_BUILDER(Name("TensorArrayV3").Device(DEVICE_CPU),
                           TensorArrayOp);
 
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
+TF_CALL_bool(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -444,6 +445,7 @@ TF_CALL_ALL_TYPES(REGISTER_WRITE);
                           TensorArrayWriteOp<GPUDevice, type>);
 
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
+TF_CALL_bool(REGISTER_GPU);
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -533,6 +535,7 @@ TF_CALL_ALL_TYPES(REGISTER_READ)
                           TensorArrayReadOp<GPUDevice, type>);
 
 TF_CALL_GPU_ALL_TYPES(REGISTER_GPU);
+//TODO
 TF_CALL_complex64(REGISTER_GPU);
 TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
@@ -965,6 +968,9 @@ TF_CALL_complex128(REGISTER_GPU);
 REGISTER_GPU(bfloat16);
 #undef REGISTER_GPU
 
+// 07/03/2017, Sebastian Weiss: This is now handled in TF_CALL_GPU_ALL_TYPES
+/*
+
 // A special GPU kernel for int32.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
 // registration requires all int32 inputs and outputs to be in host memory.
@@ -986,6 +992,8 @@ REGISTER_KERNEL_BUILDER(Name("TensorArrayConcatV3")
                             .HostMemory("lengths")
                             .HostMemory("handle"),
                         TensorArrayConcatOp<CPUDevice, int32>);
+
+*/
 
 #endif  // GOOGLE_CUDA
 

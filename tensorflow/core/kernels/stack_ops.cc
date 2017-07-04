@@ -345,8 +345,11 @@ REGISTER_KERNEL_BUILDER(Name("StackPop").Device(DEVICE_CPU), StackPopOp);
                               .TypeConstraint<type>("elem_type"), \
                           StackPopOp)
 
-TF_CALL_NUMBER_TYPES_NO_INT32(REGISTER_GPU_KERNEL);
+TF_CALL_GPU_ALL_TYPES(REGISTER_GPU_KERNEL);
 #undef REGISTER_GPU_KERNEL
+
+// 07/03/2017, Sebastian Weiss: This is now handled in TF_CALL_GPU_ALL_TYPES
+/*
 
 // Special GPU kernels for int32 and bool.
 // TODO(b/25387198): Also enable int32 in device memory. This kernel
@@ -363,6 +366,8 @@ REGISTER_GPU_HOST_KERNEL(int32);
 REGISTER_GPU_HOST_KERNEL(bool);
 
 #undef REGISTER_GPU_HOST_KERNEL
+
+ */
 
 class StackCloseOp : public OpKernel {
  public:

@@ -388,6 +388,9 @@ REGISTER_GPU_LEN(bfloat16);
 
 // special GPU kernel for int32
 
+// 07/03/2017, Sebastian Weiss: This is now handled in TF_CALL_GPU_ALL_TYPES
+/*
+
 #define REGISTER_GPU_int32(len_type)                            \
   REGISTER_KERNEL_BUILDER(Name("SplitV")                        \
                               .Device(DEVICE_GPU)               \
@@ -403,6 +406,8 @@ REGISTER_GPU_int32(int32);
 REGISTER_GPU_int32(int64);
 
 #undef REGISTER_GPU_int32
+
+*/
 
 #endif  // GOOGLE_CUDA
 
