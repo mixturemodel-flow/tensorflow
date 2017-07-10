@@ -28,7 +28,7 @@ from tensorflow.python.platform import test
 class WhereOpTest(test.TestCase):
 
   def _testWhere(self, x, truth, expected_err_re=None):
-    with self.test_session():
+    with self.test_session(use_gpu=True):
       ans = array_ops.where(x)
       self.assertEqual([None, x.ndim], ans.get_shape().as_list())
       if expected_err_re is None:
@@ -67,7 +67,7 @@ class WhereOpTest(test.TestCase):
   def testThreeArgument(self):
     x = np.array([[-2, 3, -1], [1, -3, -3]])
     np_val = np.where(x > 0, x * x, -x)
-    with self.test_session():
+    with self.test_session(use_gpu=True):
       tf_val = array_ops.where(constant_op.constant(x) > 0, x * x, -x).eval()
     self.assertAllEqual(tf_val, np_val)
 
