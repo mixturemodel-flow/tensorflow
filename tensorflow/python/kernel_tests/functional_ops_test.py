@@ -34,7 +34,6 @@ from tensorflow.python.ops import variables
 import tensorflow.python.ops.tensor_array_grad  # pylint: disable=unused-import
 from tensorflow.python.platform import test
 
-
 def simple_scoped_fn(a, x):
   """Simple function: (a, x) -> 2(x+a), but with "2" as a variable in scope."""
   with variable_scope.variable_scope("body"):
@@ -133,15 +132,36 @@ class FunctionalOpsTest(test.TestCase):
   # pylint: enable=unnecessary-lambda
 
   def testMap_Simple(self):
-    with self.test_session():
-      nums = [1, 2, 3, 4, 5, 6]
+    from tensorflow.core.protobuf.config_pb2 import ConfigProto
+    config = ConfigProto(log_device_placement=True)
+    for dtype in (dtypes.int32, dtypes.int64, dtypes.float32, dtypes.float64):
+      with self.test_session(force_gpu=True, config=config):
+        nums = [1, 2, 3, 4, 5, 6]
+        elems = constant_op.constant(nums, name="data")
+        r = functional_ops.map_fn(
+            lambda x: math_ops.multiply(math_ops.add(x, 3), 2), elems)
+        self.assertAllEqual(np.array([(x + 3) * 2 for x in nums]), r.eval())
+
+  def testMap_SimpleBool(self):
+    from tensorflow.core.protobuf.config_pb2 import ConfigProto
+    config = ConfigProto(log_device_placement=True)
+    with self.test_session(force_gpu=True, config=config):
+      nums = [True, False, True, True, False]
+      ones = [1,    1,     1,    1,    1    ]
+      zeros= [0,    0,     0,    0,    0    ]
       elems = constant_op.constant(nums, name="data")
-      r = functional_ops.map_fn(
-          lambda x: math_ops.multiply(math_ops.add(x, 3), 2), elems)
-      self.assertAllEqual(np.array([(x + 3) * 2 for x in nums]), r.eval())
+      elems1= constant_op.constant(ones, name="data1")
+      elems0= constant_op.constant(zeros, name="data0")
+      def fn(x):
+         data, one, zero = x
+         return array_ops.where(data, one, zero)
+      r = functional_ops.map_fn(fn, (elems, elems1, elems0), dtype=dtypes.int32)
+      self.assertAllEqual(np.array([1, 0, 1, 1, 0]), r.eval())
 
   def testMapSparseTensor(self):
-    with self.test_session():
+    from tensorflow.core.protobuf.config_pb2 import ConfigProto
+    config = ConfigProto(log_device_placement=True)
+    with self.test_session(force_gpu=True, config=config):
       with self.assertRaises(TypeError):
         functional_ops.map_fn(
             lambda x: x,
@@ -151,7 +171,9 @@ class FunctionalOpsTest(test.TestCase):
                 dense_shape=[2, 2]))
 
   def testMap_Scoped(self):
-    with self.test_session() as sess:
+    from tensorflow.core.protobuf.config_pb2 import ConfigProto
+    config = ConfigProto(log_device_placement=True)
+    with self.test_session(force_gpu=True, config=config) as sess:
 
       def double_scoped(x):
         """2x with a dummy 2 that is scoped."""
@@ -182,7 +204,9 @@ class FunctionalOpsTest(test.TestCase):
         self.assertAllEqual(doubles, r.eval())
 
   def testMap_Grad(self):
-    with self.test_session():
+    from tensorflow.core.protobuf.config_pb2 import ConfigProto
+    config = ConfigProto(log_device_placement=True)
+    with self.test_session(force_gpu=True, config=config):
       param = constant_op.constant(2.0)
       elems = constant_op.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], name="elems")
       y = functional_ops.map_fn(
@@ -193,7 +217,9 @@ class FunctionalOpsTest(test.TestCase):
       self.assertAllEqual([4.0, 8.0, 12.0, 16.0, 20.0, 24.0], r.eval())
 
   def testMap_SimpleNotTensor(self):
-    with self.test_session():
+    from tensorflow.core.protobuf.config_pb2 import ConfigProto
+    config = ConfigProto(log_device_placement=True)
+    with self.test_session(force_gpu=True, config=config):
       nums = np.array([1, 2, 3, 4, 5, 6])
       r = functional_ops.map_fn(
           lambda x: math_ops.multiply(math_ops.add(x, 3), 2), nums)
@@ -445,7 +471,6 @@ class FunctionalOpsTest(test.TestCase):
       # smoke test to ensure they all evaluate
       sess.run([result, result_t, result_grad, result_t_grad],
                feed_dict={x: [[1.0, 2.0]]})
-
 
 if __name__ == "__main__":
   test.main()
