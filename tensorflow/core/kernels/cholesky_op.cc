@@ -171,6 +171,8 @@ class CholeskyOpGpu : public AsyncOpKernel {
 
 REGISTER_LINALG_OP_GPU("Cholesky", (CholeskyOpGpu<float>), float);
 REGISTER_LINALG_OP_GPU("Cholesky", (CholeskyOpGpu<double>), double);
+REGISTER_LINALG_OP_GPU("BatchCholesky", (CholeskyOpGpu<float>), float); //07/14/2017, Sebastian Weiss: BatchCholesky was missing
+REGISTER_LINALG_OP_GPU("BatchCholesky", (CholeskyOpGpu<double>), double);
 
 #endif  // GOOGLE_CUDA
 
