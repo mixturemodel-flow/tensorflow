@@ -257,6 +257,43 @@ TF_CALL_LAPACK_TYPES(POTRF_INSTANCE);
 
 
 template <typename Scalar, typename BufSizeFnT, typename SolverFnT>
+static inline Status GetrfImpl(BufSizeFnT bufsize, SolverFnT solver,
+                               OpKernelContext* context,
+                               cusolverDnHandle_t cusolver_dn_handle,
+                               int m, int n, Scalar* A,
+                               int lda,
+                               int* dev_ipiv, int* dev_lapack_info) {
+  /* Get amount of workspace memory required. */
+  int lwork;
+  TF_RETURN_IF_CUSOLVER_ERROR(
+      bufsize(cusolver_dn_handle, m, n, A, lda, &lwork));
+  /* Allocate device memory for workspace. */
+  ScratchSpace<Scalar> dev_workspace(context, lwork, /* on_host */ false);
+  /* Launch the solver kernel. */
+  TF_RETURN_IF_CUSOLVER_ERROR(solver(
+      cusolver_dn_handle, 
+      m, n, CUDAComplex(A), lda, 
+      CUDAComplex(dev_workspace.mutable_data()), dev_ipiv, dev_lapack_info));
+  return Status::OK();
+}
+
+#define GETRF_INSTANCE(Scalar, lapack_prefix)                                \
+  template <>                                                                \
+  Status CudaSolver::Getrf<Scalar>(                                          \
+             int m, int n, Scalar* dev_A, int lda,                           \
+             int* dev_ipiv, int* dev_lapack_info) const {                    \
+    return GetrfImpl(DN_BUFSIZE_FN(getrf, lapack_prefix),                    \
+                     DN_SOLVER_FN(getrf, lapack_prefix), context_,           \
+                     cusolver_dn_handle_,                                    \
+                     m, n, dev_A, lda,                                       \
+                     dev_ipiv, dev_lapack_info);                             \
+  }
+
+TF_CALL_LAPACK_TYPES_NO_COMPLEX(GETRF_INSTANCE);
+
+
+
+template <typename Scalar, typename BufSizeFnT, typename SolverFnT>
 static inline Status GesvdImpl(BufSizeFnT bufsize, SolverFnT solver,
                                OpKernelContext* context,
                                cusolverDnHandle_t cusolver_dn_handle,
