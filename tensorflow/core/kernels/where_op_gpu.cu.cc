@@ -69,53 +69,13 @@ struct WriteIndex : public thrust::unary_function<int64, fixed_array<NDIM, int64
   }
 };
 
-//This version does not work because of some Thrust-internal errors.
-//So, I'll do it manually
-/*
 template <int NDIM>
-struct ComputeWhere {
-  
-  static int64 Compute(const Tensor& input,
-    const thrust::device_ptr<const bool>& input_begin, const thrust::device_ptr<const bool>& input_end,
-    int64 num_true, int64* output)
-  {
-    Eigen::DSizes<Eigen::DenseIndex, NDIM> strides;
-
-    // Calculate strides for RowMajor order.
-    EIGEN_STATIC_ASSERT((static_cast<int>(decltype(input.tensor<bool, NDIM>())::Layout) ==
-                         static_cast<int>(Eigen::RowMajor)),
-                        INTERNAL_ERROR_INPUT_SHOULD_BE_ROWMAJOR);
-
-    strides[NDIM - 1] = 1;
-    for (int i = NDIM - 2; i >= 0; --i) {
-      strides[i] = strides[i + 1] * input.dim_size(i + 1);
-    }
-      
-    auto counting_it = thrust::counting_iterator<int64>(0);
-    auto transform_it = thrust::make_transform_iterator(counting_it, WriteIndex<NDIM>(strides));
-    int64 num_elems = input.NumElements();
-    thrust::device_ptr<fixed_array<NDIM, int64> > output_begin((fixed_array<NDIM, int64>*) output);
-    //thrust::device_ptr<int64> output_begin(output);
-    int64 rsize = thrust::copy_if(transform_it, transform_it + num_elems, input_begin, output_begin, thrust::identity<bool>())
-        - output_begin;
-    printf(" rsize=%d\n", (int) rsize);
-    return rsize;
-  }
-  
-};
-*/
-
-//manual gather/transform
-template <int NDIM>
-__global__ void CopyTransformIndices(int nthreads,
-    unsigned int* counter, Eigen::DSizes<Eigen::DenseIndex, NDIM> strides,
-    const bool* input, fixed_array<NDIM, int64>* output)
+__global__ void CopyTransformIndices(
+    int nthreads, Eigen::DSizes<Eigen::DenseIndex, NDIM> strides,
+    const int64* indices, fixed_array<NDIM, int64>* output)
 {
   CUDA_1D_KERNEL_LOOP(idx, nthreads) {
-    if (input[idx]) {
-      unsigned int index = atomicAdd(counter, 1);
-      output[index] = WriteIndex<NDIM>(strides)(idx);
-    }
+    output[idx] = WriteIndex<NDIM>(strides)(indices[idx]);
   }
 }
 
@@ -136,21 +96,34 @@ struct ComputeWhere {
     for (int i = NDIM - 2; i >= 0; --i) {
       strides[i] = strides[i + 1] * input.dim_size(i + 1);
     }
+    
+    int64 num_elems = input.NumElements();
+    thrust::device_ptr<const bool> input_begin(input_flat);
+    
+    //create tensor for the compacted indices
+    TensorShape temp_shape({num_true});
+    Tensor compacted_indices;
+    if (!ctx->allocate_temp(DT_INT64, temp_shape, &compacted_indices).ok()) return -1;
+
+    //fill linear indices
+    thrust::device_ptr<int64> compacted_indices_ptr(compacted_indices.flat<int64>().data());
+    int64 rsize = thrust::copy_if(
+        thrust::counting_iterator<int64>(0), thrust::counting_iterator<int64>(num_elems),
+        input_begin, compacted_indices_ptr, thrust::identity<bool>())
+      - compacted_indices_ptr;
       
-    //TODO: better use tensorflow's internal memory management
-    unsigned int* counter;
-    cudaMalloc(&counter, sizeof(unsigned int));
-    cudaMemset(counter, 0, sizeof(unsigned int));
+    //convert linear indices to coordinates
+    //This throws an illegal memory access error
+    //thrust::device_ptr<fixed_array<NDIM, int64> > output_begin((fixed_array<NDIM, int64>*) output);
+    //thrust::transform(compacted_indices_ptr, compacted_indices_ptr + num_true, output_begin, WriteIndex<NDIM>(strides));
     
     const GPUDevice& d = ctx->eigen_device<GPUDevice>();
-    int nelem = input.NumElements();
-    CudaLaunchConfig cfg = GetCudaLaunchConfig(nelem, d);
+    CudaLaunchConfig cfg = GetCudaLaunchConfig(num_true, d);
     CopyTransformIndices<NDIM> <<<cfg.block_count, cfg.thread_per_block, 0, d.stream()>>>(
-        nelem, counter, strides, input_flat, (fixed_array<NDIM, int64>*) output);
+        num_true, strides, compacted_indices.flat<int64>().data(), (fixed_array<NDIM, int64>*) output);
     
-    cudaFree(counter);
-    
-    return num_true;
+    //TODO: optimize this into one kernel call using copy_if and transform iterator
+    return rsize;
   }
   
 };
