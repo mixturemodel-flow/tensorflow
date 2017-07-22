@@ -293,7 +293,7 @@ typedef Eigen::ThreadPoolDevice CPUDevice;
 typedef Eigen::GpuDevice GPUDevice;
 
 namespace {
-
+    
 template <int NDIM, typename T>
 struct __attribute__((__packed__)) fixed_array {
     T val[NDIM];
@@ -380,7 +380,6 @@ class WhereOpGPU : public OpKernel {
   explicit WhereOpGPU(OpKernelConstruction* context) : OpKernel(context) {}
 
   void Compute(OpKernelContext* context) override {
-      
     const Tensor& input = context->input(0);
     const int input_dims = input.dims();
     
@@ -393,6 +392,8 @@ class WhereOpGPU : public OpKernel {
     TensorShape output_shape({num_true, input_dims});
     Tensor* output = nullptr;
     OP_REQUIRES_OK(context, context->allocate_output(0, output_shape, &output));
+    
+    if (num_true == 0) return; //fast exit
 
 #define HANDLE_DIM(NDIM)                                             \
   case NDIM:                                                         \
