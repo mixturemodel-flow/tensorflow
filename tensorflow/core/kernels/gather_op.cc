@@ -113,10 +113,9 @@ TF_CALL_QUANTIZED_TYPES(REGISTER_GATHER_CPU);
 // Registration of the GPU implementations.
 #define REGISTER_GATHER_GPU(type) REGISTER_GATHER_ALL_INDICES(GPU, type)
 
-// Sebastian Weiss, 06/23/2017: add integer support for GPUs
-//TF_CALL_GPU_ALL_TYPES(REGISTER_GATHER_GPU);
+// Sebastian Weiss, 06/23/2017: add integer and bool support for GPUs
 TF_CALL_GPU_ALL_TYPES(REGISTER_GATHER_GPU)
-
+TF_CALL_bool(REGISTER_GATHER_GPU)
 TF_CALL_complex64(REGISTER_GATHER_GPU);
 TF_CALL_complex128(REGISTER_GATHER_GPU);
 
