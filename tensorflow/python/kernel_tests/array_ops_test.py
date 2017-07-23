@@ -103,7 +103,7 @@ class BooleanMaskTest(test_util.TensorFlowTestCase):
     arr = np.random.rand(*arr_shape)
     mask = make_mask(arr_shape[:ndims_mask])
     masked_arr = arr[mask]
-    with self.test_session():
+    with self.test_session(use_gpu=True):
       masked_tensor = array_ops.boolean_mask(arr, mask)
 
       # Leading dimension size of masked_tensor is always unknown until runtime
