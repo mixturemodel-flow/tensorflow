@@ -1,0 +1,14 @@
+image: docker:latest
+
+stages:
+  - docker
+
+docker_tensorflow:
+  stage: docker
+  services:
+   - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/insightpt/tensorflow/tf_gpu:latest .
+    - docker push registry.gitlab.com/insightpt/tensorflow/tf_gpu:latest
+
