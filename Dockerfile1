@@ -30,9 +30,5 @@ ENV GCC_HOST_COMPILER_PATH /usr/bin/gcc-4.9
 ENV TF_CUDNN_VERSION ""
 ENV CUDNN_INSTALL_PATH /usr/local/cuda
 ENV TF_CUDA_COMPUTE_CAPABILITIES 5.2
-RUN ./configure
 
-# Compile it
-bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
-bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package 
 
