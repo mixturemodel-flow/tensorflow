@@ -17,7 +17,7 @@ compile:
   stage: compile
   image: registry.gitlab.com/insightpt/tensorflow/tf_build_env:latest
   script:
-    - ./configure
+    - bash ./configure
     - bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package
     - bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow_pkg
   artifacts:
