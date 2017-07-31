@@ -13,6 +13,7 @@ prepare:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker build -f Dockerfile1 -t registry.gitlab.com/insightpt/tensorflow/tf_build_env:latest .
     - docker push registry.gitlab.com/insightpt/tensorflow/tf_build_env:latest
+  when: manual
 
 compile:
   stage: compile
@@ -25,6 +26,7 @@ compile:
   artifacts:
     paths:
     - tensorflow-1.2.0-cp35-cp35m-linux_x86_64.whl
+  when: manual
     
 docker:
   stage: docker
